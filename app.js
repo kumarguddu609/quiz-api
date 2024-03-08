@@ -5,9 +5,10 @@ const app = express();
 
 // Create a connection pool with promise support
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  database: "quiz",
+  host: "b4hrn0x2sevhvukr2vgc-mysql.services.clever-cloud.com",
+  user: "utwlgqmr1b693wns",
+  password: "GZnbUbf7Dj835eGqefsk",
+  database: "b4hrn0x2sevhvukr2vgc",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -30,7 +31,7 @@ app.get("/questions", async (req, res) => {
     }
 
     // Print the random question to the console
-    console.log(results[0]);
+    // console.log(results[0]);
 
     // Release the connection back to the pool
     connection.release();

@@ -4,6 +4,7 @@
   "description": "API for quiz questions in Gujarati.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +19,7 @@
     "RESTAPI",
     "Quiz"
   ],
-  "author": "Khushi, Guddu Kumar",
+  "author": "Khushi",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kumarguddu609/quiz-api/issues"

@@ -3,7 +3,7 @@ const express = require("express");
 require("dotenv").config();
 
 const app = express();
-
+app.use(express.json());
 // Create a connection pool with promise support
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -46,7 +46,7 @@ app.get("/", async (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server is running......");
 });

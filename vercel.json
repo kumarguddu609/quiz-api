@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "Quiz-API",
+  "builds": [
+    {
+      "src": "./app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [{ "src": "/(.*)*", "dest": "/" }]
+}

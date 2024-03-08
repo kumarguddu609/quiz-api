@@ -5,17 +5,17 @@ const app = express();
 
 // Create a connection pool with promise support
 const pool = mysql.createPool({
-  host: "b4hrn0x2sevhvukr2vgc-mysql.services.clever-cloud.com",
-  user: "utwlgqmr1b693wns",
-  password: "GZnbUbf7Dj835eGqefsk",
-  database: "b4hrn0x2sevhvukr2vgc",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
 // API endpoint to get a random question
-app.get("/questions", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     // Use the pool to get a connection
     const connection = await pool.getConnection();
@@ -45,7 +45,7 @@ app.get("/questions", async (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

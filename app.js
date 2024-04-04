@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(express.json());
+
 // Create a connection pool with promise support
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -15,35 +16,49 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-// API endpoint to get a random question
+// API endpoint to get 15 random questions
 app.get("/", async (req, res) => {
   try {
     // Use the pool to get a connection
     const connection = await pool.getConnection();
 
-    // Fetch a random question from the quiz_questions table
-    const [results] = await connection.query(
-      "SELECT * FROM `quiz_questions`"
-    );
+    // Fetch total number of questions
+    const [countRows] = await connection.query("SELECT COUNT(*) AS total FROM `quiz_questions`");
+    const totalQuestions = countRows[0].total;
 
-    if (results.length === 0) {
-      // No questions found
-      return res.status(404).json({ error: "No questions found" });
-    }
+    // Generate 15 unique random indices
+    const uniqueRandomIndices = generateUniqueRandomIndices(totalQuestions, 15);
 
-    // Print the random question to the console
-    // console.log(results[0]);
+    // Fetch 15 random questions from the quiz_questions table
+    const questionsPromises = uniqueRandomIndices.map(async index => {
+      const [results] = await connection.query(
+        "SELECT * FROM `quiz_questions` LIMIT ?, 1",
+        [index]
+      );
+      return results[0];
+    });
+
+    const questions = await Promise.all(questionsPromises);
 
     // Release the connection back to the pool
     connection.release();
 
-    // Send the random question as a JSON response
-    res.json(results[0]);
+    // Send the random questions as a JSON response
+    res.json(questions);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// Function to generate unique random indices
+function generateUniqueRandomIndices(max, count) {
+  const indices = new Set();
+  while (indices.size < count) {
+    indices.add(Math.floor(Math.random() * max));
+  }
+  return Array.from(indices);
+}
 
 // Start the server
 const PORT = process.env.PORT || 3000;

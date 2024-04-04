@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
 
     // Fetch a random question from the quiz_questions table
     const [results] = await connection.query(
-      "SELECT * FROM `quiz_questions` ORDER BY RAND() LIMIT 1"
+      "SELECT * FROM `quiz_questions` ORDER BY RAND()"
     );
 
     if (results.length === 0) {
